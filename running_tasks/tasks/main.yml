@@ -1,0 +1,10 @@
+---
+# tasks file for running_tasks
+- name: to checkthe no of runnig taks
+  shell: >
+            ps -aux | head -5
+  register: result
+
+- name: show result
+  debug:
+    var: result
