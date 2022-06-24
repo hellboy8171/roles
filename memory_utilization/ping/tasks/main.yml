@@ -1,0 +1,5 @@
+---
+# tasks file for ping
+
+- name: pinging the servers
+  ping:
