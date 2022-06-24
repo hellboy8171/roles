@@ -1,0 +1,12 @@
+---
+# tasks file for service_start
+- name: install httpd
+  yum:
+       name: httpd
+       state: installed
+                
+- name: service start
+  service:
+        name: httpd
+        state: started
+        enabled: true
