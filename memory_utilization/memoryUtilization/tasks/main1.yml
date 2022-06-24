@@ -1,0 +1,11 @@
+---
+# tasks file for memoryUtilization
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: see the result
+      shell: >
+         cat result.txt
+      register: result
+    - debug:
+        var: result.stdout

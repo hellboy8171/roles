@@ -1,0 +1,4 @@
+---
+# vars file for result
+file: /home/ansible/fundamentals/roles/memoryUtilization/files/result.txt
+path: /home/ansible/fundamentals/roles/result/files/

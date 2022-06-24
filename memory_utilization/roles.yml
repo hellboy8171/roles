@@ -1,0 +1,13 @@
+# Playbook that uses a role to install & configure apache with a virtual host
+# named 'vhost'. The playbook then goes on to further customize vhost's
+# default index.html page.
+
+- hosts: jumphost
+  gather_facts: no
+  roles:
+    - role: memoryUtilization
+
+- hosts: localhost
+  gather_facts: no
+  roles:
+    - role: result

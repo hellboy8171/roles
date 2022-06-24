@@ -1,0 +1,6 @@
+---
+# vars file for memoryUtilization
+psFile: task.ps1
+remoteDest: C:\rajat\
+resultFile: C:\rajat\result.txt
+localDest: /home/ansible/fundamentals/roles/memoryUtilization/files/ 

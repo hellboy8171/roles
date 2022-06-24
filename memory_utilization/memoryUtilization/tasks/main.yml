@@ -1,0 +1,21 @@
+---
+# tasks file for memoryUtilization
+
+- name: copy script
+  win_copy:
+        src: '{{ psFile }}'
+        dest: '{{ remoteDest }}'
+
+- name: run script     
+  win_shell: |
+           powershell.exe
+           cd C:\rajat\
+           .\task.ps1
+
+- name: copy file
+  ansible.builtin.fetch:
+         src: '{{ resultFile }}'
+         dest: '{{ localDest }}'
+         flat: yes
+    
+

@@ -1,0 +1,13 @@
+---
+# tasks file for result
+- name: copy the file
+  copy:
+    src: '{{ file }}'
+    dest: '{{ path }}'
+
+- name: show output
+  shell: >
+         cat '{{ path }}/result.txt'
+  register: result
+- debug:
+      var: result.stdout
