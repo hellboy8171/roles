@@ -1,0 +1,29 @@
+- name: Copy script to host
+  win_copy:
+     src: "{{itemWindows}}"
+     dest: "{{remoteDestWindows}}"
+  delegate_to: "{{ hostname }}"
+
+- name: run script     
+  win_shell: "{{remoteDestWindows}}{{itemWindows}}"
+  delegate_to: "{{ hostname }}"
+  register: win_result
+
+- name: Remove a file, if present
+  win_file:
+     path: "{{remoteDestWindows}}{{itemWindows}}"
+     state: absent
+  delegate_to: "{{ hostname }}"
+
+
+- name: Fetchting the stdout_lines
+  set_fact:
+     win_line_result: "{{ win_result.stdout_lines}}"
+
+- name: Printing the result
+  debug: 
+     msg: "{{win_result}}"
+
+- name: Printing the output of stdout_lines
+  debug: 
+    msg: "{{win_line_result}}"

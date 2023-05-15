@@ -1,0 +1,10 @@
+---
+# vars file for roles/snow_integration
+snow_url: 'https://dev158915.service-now.com/api/now/table/incident?sysparm_query=short_descriptionLIKECPU&active=true'
+snow_patch_url: 'https://dev158915.service-now.com/api/now/v2/table/incident/{{ sys_id }}'
+itemLinux: cpu_util.sh
+remoteDestLinux: /tmp
+itemWindows: cpu_util.ps1
+remoteDestWindows: C:\
+snow_user: admin
+snow_pass: pw*EWFlt^19C  

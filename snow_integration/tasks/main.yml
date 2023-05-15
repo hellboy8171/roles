@@ -1,0 +1,49 @@
+---
+# tasks file for roles/snow_integration
+
+- name: Fetch the Active Incidents
+  uri:
+      url: "{{ snow_url }}"
+      url_username: "{{ snow_user }}"
+      url_password: "{{ snow_pass }}"
+      method: GET
+      force_basic_auth: true
+      validate_certs: false
+      force: true
+      return_content: true
+      use_proxy: false
+      status_code: 200
+      follow_redirects: all
+      body_format: json
+      timeout: 30
+  register: INCs
+
+- name: Fetch the Host Name
+  set_fact:
+     os_type: "{{ INCs.json.result[0].u_ostype }}"
+     hostname: "{{ INCs.json.result[0].u_hostname }}"
+     sys_id: "{{ INCs.json.result[0].sys_id }}"
+
+
+- 
+
+- debug: 
+    msg: "{{ os_type }}"
+- debug: 
+    msg: "{{ hostname }}"
+- debug: 
+    msg: "{{ sys_id }}"
+
+- name: Running Cpu Utilisation
+  include: cpu_util.yml 
+  when: os_type == "linux"
+
+ 
+- name: Running Cpu Utilisation
+  include: cpu_windows.yml 
+  when: os_type == "windows" 
+
+
+# - include: when_success.yml
+    
+  

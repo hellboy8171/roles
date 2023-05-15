@@ -1,0 +1,13 @@
+# this yml file will run when cpu utilisation is below threshold
+
+- name: Patch the incident
+  uri:
+    url: "{{snow_patch_url}}"
+    method: Patch
+    user: "{{snow_user}}"
+    password: "{{snow_pass}}"
+    body: '{"work_notes":"cpu utilization is below threshold", "state": "In Progress"}'
+    #body: '{"state": "Active"}'
+    return_content: true
+    status_code: 200
+    body_format: json

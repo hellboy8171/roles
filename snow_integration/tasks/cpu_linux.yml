@@ -1,0 +1,37 @@
+- name: Copy script to host
+  copy:
+     src: "{{ item }}"
+     dest: "{{ remoteDest }}"
+     mode: u+rwx,g-rwx,o-rwx
+  delegate_to: "{{ hostname }}"
+
+- name: Executing Script
+  shell: /tmp/cpu_util.sh
+  delegate_to: "{{ hostname }}"
+  register: linux_result
+
+- name: Deleting Script
+  file:
+    path: "{{ remoteDest }}/{{ item }}"
+    state: absent
+  delegate_to: "{{ hostname }}"
+
+- name: Fetchting the stdout_lines
+  set_fact:
+     linux_line_result: "{{ linux_result.stdout_lines}}"
+
+- name: Printing the result
+  debug: 
+    msg: "{{linux_result}}"
+
+- name: Printing the output of stdout_lines
+  debug: 
+    msg: "{{linux_line_result}}"
+
+
+
+
+
+
+
+

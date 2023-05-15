@@ -1,0 +1,50 @@
+---
+- name: Fetch incident details
+  hosts: localhost
+  ather_facts: false
+  #vars_files:
+  # - vaults/snowdevtest.yml
+  vars:
+    snow_url: 'https://husqdev.service-now.com/api/now/table/incident?sysparm_query=assignment_groupLIKEAnsible%20Automation&state=2'
+  tasks:
+    - name: Fetch the dev incidents
+      uri:
+        url: "{{ snow_url }}"
+        #url: https://dev144990.service-now.com/api/now/table/incident
+        #user: "{{ snow['admin']['username'] }}"
+        #password: "{{ snow['admin']['password'] }}"
+        user:
+        password:
+        method: GET
+          #headers: "{
+          #  'Accept': 'application/json',
+          #  'Content-Type': 'application/json',
+          #  'X-UserToken': '42c9a895974d2110ac457f200153afe6ab261ef1223b337432a775b74708411ebcc8d3a1'
+          #}"
+          #body: "{'short_description':'Ansible-test/cpu_utilization'}"
+          #body: "{'active':'true'}"
+        force_basic_auth: true
+        validate_certs: false
+        force: true
+        return_content: true
+        use_proxy: false
+        status_code: 200
+        follow_redirects: all
+        body_format: json
+        timeout: 30
+      register: INCs
+    - name: print
+      debug:
+        var: INCs.json.result
+    - name: patch the incident
+      uri:
+        url: "https://husqdev.service-now.com/api/now/v2/table/incident/{{item.sys_id}}"
+        method: Patch
+        user: H626338
+        password: husq@123
+        body: '{"work_notes":"cpu utilization failed", "assignment_group": "", "assigned_to": ""}'
+        #body: '{"state": "Active"}'
+        return_content: true
+        status_code: 200
+        body_format: json
+        with_items: "{{ INCs.json.result}}"
