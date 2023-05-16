@@ -35,7 +35,7 @@
     msg: "{{ sys_id }}"
 
 - name: Running Cpu Utilisation
-  include: cpu_util.yml 
+  include: cpu_linux.yml 
   when: os_type == "linux"
 
  

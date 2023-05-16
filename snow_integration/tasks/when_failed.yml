@@ -6,8 +6,8 @@
     method: Patch
     user: "{{snow_user}}"
     password: "{{snow_pass}}"
-    body: '{"work_notes":"cpu utilization is Above threshold", "state": "In Progress"}'
-    #body: '{"state": "Active"}'
+    #body: '{"work_notes":"cpu utilization is Above threshold", "state": "In Progress"}'
+    body: '{"work_notes":"cpu utilization is Above threshold"}'
     return_content: true
     status_code: 200
     body_format: json
