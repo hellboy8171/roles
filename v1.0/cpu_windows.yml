@@ -1,0 +1,40 @@
+- name: CPU Linux FILE
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Copy script to host
+      win_copy:
+        src: "{{itemWindows}}"
+        dest: "{{remoteDestWindows}}"
+      delegate_to: "{{ hostname }}"
+
+    - name: run script     
+      win_shell: "{{remoteDestWindows}}{{itemWindows}}"
+      delegate_to: "{{ hostname }}"
+      register: win_result
+
+    - name: Remove a file, if present
+      win_file:
+        path: "{{remoteDestWindows}}{{itemWindows}}"
+        state: absent
+      delegate_to: "{{ hostname }}"
+
+
+    - name: Fetchting the stdout_lines
+      set_fact:
+        win_line_result: "{{ win_result.stdout_lines}}"
+        win_line_result_condition: "{{ win_result.stdout_lines[0]}}"
+
+    - name: Printing the result
+      debug: 
+        msg: "{{win_result}}"
+
+    - name: Printing the output of stdout_lines
+      debug: 
+        msg: "{{win_line_result}}"
+
+    - include: when_success.yml 
+      when: win_line_result == "Server CPU usage is in under threshold"
+
+    - include: when_failed.yml 
+      when: win_line_result_condition == "Server CPU usage is above threshold"

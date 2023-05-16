@@ -1,0 +1,47 @@
+- name: CPU Linux FILE
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Copy script to host
+      copy:
+        src: "{{ itemLinux }}"
+        dest: "{{ remoteDestLinux }}"
+        mode: u+rwx,g-rwx,o-rwx
+      delegate_to: "{{ hostname }}"
+
+    - name: Executing Script
+      shell: /tmp/cpu_util.sh
+      delegate_to: "{{ hostname }}"
+      register: linux_result
+
+    - name: Deleting Script
+      file:
+        path: "{{ remoteDestLinux }}/{{ itemLinux }}"
+        state: absent
+      delegate_to: "{{ hostname }}"
+
+    - name: Fetchting the stdout_lines
+      set_fact:
+        linux_line_result: "{{ linux_result.stdout_lines}}"
+        linux_line_result_condition: "{{ linux_result.stdout_lines[0]}}"
+
+    - name: Printing the result
+      debug: 
+        msg: "{{linux_result}}"
+
+    - name: Printing the output of stdout_lines
+      debug: 
+        msg: "{{linux_line_result}}"
+
+    - include: when_success.yml 
+      when: linux_line_result == "Server CPU usage is in under threshold"
+
+    - include: when_failed.yml 
+      when: linux_line_result_condition == "Server CPU usage is above threshold"
+
+
+
+
+
+
+
